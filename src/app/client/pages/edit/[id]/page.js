@@ -1,31 +1,37 @@
 "use client";
+
+import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import axios from 'axios';
+import apiClient from "../../../../../axios";
 
 const EditBlog = () => {
-    const router = useRouter();
-    const { id } = router.query;
+
+    const { id } = useParams();
     const [blogData, setBlogData] = useState(null);
 
     useEffect(() => {
         const fetchBlogData = async () => {
-            if (!id) return;
             try {
-                const response = await axios.get(`http://localhost:5000/api/blogs/${id}`);
+                const response = await apiClient.get(`/blogs/${id}`);
                 setBlogData(response.data);
             } catch (error) {
                 console.error("Error fetching blog data:", error);
             }
         };
 
-        fetchBlogData();
+        if (id) {
+            fetchBlogData();
+        }
     }, [id]);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setBlogData({ ...blogData, [name]: value });
+    };
 
     const handleSave = async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/api/blogs/${id}`, blogData);
-
+            const response = await apiClient.put(`/blogs/${id}`, blogData);
             if (response.status === 200) {
                 router.push("/profile");
             } else {
@@ -46,16 +52,18 @@ const EditBlog = () => {
                     <label className="block text-gray-700 text-sm font-bold mb-2">Title</label>
                     <input
                         type="text"
+                        name="title"
                         value={blogData.title}
-                        onChange={(e) => setBlogData({ ...blogData, title: e.target.value })}
+                        onChange={handleInputChange}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>
                 <div className="mt-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Content</label>
                     <textarea
+                        name="content"
                         value={blogData.content}
-                        onChange={(e) => setBlogData({ ...blogData, content: e.target.value })}
+                        onChange={handleInputChange}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>
