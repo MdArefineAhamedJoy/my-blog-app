@@ -1,6 +1,8 @@
-const HomePage = () => {
+import HomePage from "../../client"
+
+const MyApp = () => {
   return (
-    <div><h1 className="text-center  ">This Is HOme Page</h1></div>
+    <HomePage></HomePage>
   )
 }
-export default HomePage
+export default MyApp
