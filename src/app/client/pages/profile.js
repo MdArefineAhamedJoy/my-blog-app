@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import apiClient from '../src/axios';
+import apiClient from '../../../axios';
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
@@ -14,7 +14,7 @@ const Profile = () => {
         const fetchUserData = async () => {
             try {
                 if (!userEmail) return;
-                const response = await apiClient.get(`/api/profile?email=${userEmail}`);
+                const response = await apiClient.get(`/profile?email=${userEmail}`);
                 setUserData(response.data);
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -24,7 +24,7 @@ const Profile = () => {
         const fetchUserBlogs = async () => {
             try {
                 if (!userEmail) return;
-                const response = await apiClient.get(`/api/blogs?email=${userEmail}`);
+                const response = await apiClient.get(`/blogs?email=${userEmail}`);
                 setUserBlogs(response.data);
             } catch (error) {
                 console.error("Error fetching user blogs:", error);
@@ -37,7 +37,7 @@ const Profile = () => {
 
     const handleDelete = async (id) => {
         try {
-            await apiClient.delete(`/api/blogs/${id}`);
+            await apiClient.delete(`/blogs/${id}`);
             setUserBlogs(userBlogs.filter((blog) => blog.id !== id));
         } catch (error) {
             console.error("Error deleting blog:", error);

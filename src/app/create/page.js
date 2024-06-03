@@ -1,5 +1,5 @@
+import CreateBlogPage from "../client/pages/create";
 
-import CreateBlogPage from '../../../client/create';
 
 const page = () => {
     return (

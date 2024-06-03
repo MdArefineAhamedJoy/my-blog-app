@@ -2,7 +2,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import apiClient from '../src/axios';
+import apiClient from '../../../axios';
 
 const CreateBlogPage = () => {
     const user = true;

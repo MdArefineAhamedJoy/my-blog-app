@@ -1,6 +1,12 @@
 
-import { QueryClient } from '@tanstack/react-query';
 
-const queryClient = new QueryClient();
+import axios from 'axios';
 
-export default queryClient;
+const apiClient = axios.create({
+    baseURL: 'YOUR_API_BASE_URL_HERE',
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+export default apiClient;

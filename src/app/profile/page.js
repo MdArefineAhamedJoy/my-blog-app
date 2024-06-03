@@ -1,4 +1,5 @@
-import Profile from "../../../client/profile"
+import Profile from "../client/pages/profile"
+
 
 const ProfilePage = () => {
     return <>
