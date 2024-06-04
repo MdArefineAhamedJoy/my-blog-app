@@ -1,10 +1,14 @@
 "use client"
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import apiClient from '../../../axios';
+import { useUserContext } from '@/hooks/AuthContext';
+
 
 const CreateBlogPage = () => {
-    const user = true;
+    const storedData = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+    const userEmail = storedData ? JSON.parse(storedData).email : null;
     const { register, handleSubmit, formState: { errors } } = useForm();
     const mutation = useMutation((newBlog) => apiClient.post('/blogs', newBlog));
 
@@ -14,8 +18,8 @@ const CreateBlogPage = () => {
             return;
         }
 
-        data.email = user.email;
         try {
+            data.email = userEmail
             await mutation.mutateAsync(data);
             console.log('Blog published successfully');
         } catch (error) {
@@ -24,8 +28,8 @@ const CreateBlogPage = () => {
     };
 
     return (
-        <div className=" bg-gray-100  ">
-            {user ? (
+        <div className=" bg-gray-100">
+            {userEmail ? (
                 <div className="bg-white shadow-lg rounded p-10  w-10/12 mx-auto">
                     <h1 className="text-4xl font-bold mb-8 text-center text-blue-600">Create Blog</h1>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -33,12 +37,11 @@ const CreateBlogPage = () => {
                             type="email"
                             id="email"
                             {...register('email', { required: true })}
-                            defaultValue={user?.email}
+                            defaultValue={userEmail}
                             readOnly
                             className="w-full p-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:border-blue-500"
                             required
                         />
-
                         <div className='flex w-full gap-10'>
                             <div className='w-full'>
                                 <label htmlFor="title" className="block text-gray-700 text-sm font-semibold mb-1">Blog Title:</label>

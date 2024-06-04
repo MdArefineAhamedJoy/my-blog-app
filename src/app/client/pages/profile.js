@@ -4,12 +4,10 @@ import { MdOutlineDeleteOutline, MdEdit } from "react-icons/md";
 import apiClient from '../../../axios';
 import Link from 'next/link';
 
-
 const Profile = () => {
     const storedData = typeof window !== "undefined" ? localStorage.getItem("user") : null;
     const userEmail = storedData ? JSON.parse(storedData).email : null;
     const queryClient = useQueryClient();
-
 
     const fetchUserData = async (email) => {
         const response = await apiClient.get(`/profile?email=${email}`);
@@ -44,14 +42,13 @@ const Profile = () => {
         }
     });
 
-    const handleDelete = async (id) => {
+    const handleDelete = (id) => {
         mutation.mutate(id);
     };
 
-    // if (isUserLoading || isBlogsLoading) return <div>Loading...</div>;
-    // if (userError) return <div>Error loading user data</div>;
-    // if (blogsError) return <div>Error loading blogs</div>;
-
+    if (isUserLoading || isBlogsLoading) return <div>Loading...</div>;
+    if (userError) return <div>Error loading user data: {userError.message}</div>;
+    if (blogsError) return <div>Error loading blogs: {blogsError.message}</div>;
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -63,7 +60,7 @@ const Profile = () => {
                         <p className="text-center text-gray-700 mb-2">Phone: {userData?.phoneNumber}</p>
                         <p className="text-center text-gray-700 mb-4">Email: {userData?.email}</p>
                         <Link href={`/client/pages/editprofile/${userEmail}`} className='text-center text-green-800 w-full block hover:underline hover:text-blue-500  focus:text-blue-500  active:text-red-500 visited:text-purple-500'>
-                            edit profile
+                            Edit Profile
                         </Link>
                     </div>
                 </div>
@@ -73,12 +70,12 @@ const Profile = () => {
                         {userBlogs?.length > 0 ? (
                             <ul className="border p-4">
                                 {userBlogs.map((blog) => (
-                                    <li key={blog?.id} className="mb-4 border-b-2 pb-2">
-                                        <h4 className="text-lg font-semibold mb-1 text-center">{blog?.title}</h4>
-                                        <p className="text-gray-700 mb-2">{blog?.content}</p>
+                                    <li key={blog.id} className="mb-4 border-b-2 pb-2">
+                                        <h4 className="text-lg font-semibold mb-1 text-center">{blog.title}</h4>
+                                        <p className="text-gray-700 mb-2">{blog.content}</p>
                                         <div className="flex items-center justify-between w-full">
                                             <div className="text-sm text-gray-500">
-                                                <p>Published on:</p> {new Date(blog?.publicationDate).toLocaleDateString()}
+                                                <p>Published on:</p> {new Date(blog.publicationDate).toLocaleDateString()}
                                             </div>
                                             <div className="flex items-center">
                                                 <button onClick={() => handleDelete(blog.id)} className="mr-4">

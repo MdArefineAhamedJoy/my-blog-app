@@ -16,14 +16,15 @@ const Login = () => {
             if (response.status === 201 || response.status === 200) {
                 const token = response.data.token;
                 localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(data));
+
                 toast.success('Login successful');
-                reset()
+                reset();
                 router.push('/profile');
             } else {
                 throw new Error('Login failed');
             }
         } catch (error) {
-
             setError('Login failed. Please try again.');
         }
     };
