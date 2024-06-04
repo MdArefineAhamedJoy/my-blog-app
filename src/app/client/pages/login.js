@@ -1,42 +1,44 @@
 "use client"
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import apiClient from '../../../axios';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { register, handleSubmit, reset } = useForm();
+    const router = useRouter();
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const onSubmit = async (data) => {
         try {
-            const response = await apiClient.post('/login', { email, password });
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Login successful');
-                localStorage.setItem('user', JSON.stringify({ email }));
-                localStorage.setItem('token', data.token);
+            const response = await apiClient.post('/login', data);
+            if (response.status === 201 || response.status === 200) {
+                const token = response.data.token;
+                localStorage.setItem('token', token);
+                toast.success('Login successful');
+                reset()
+                router.push('/profile');
             } else {
                 throw new Error('Login failed');
             }
         } catch (error) {
-            console.error('Login failed:', error);
+
             setError('Login failed. Please try again.');
         }
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <div className="bg-white p-6 rounded-md shadow-lg w-5/12 ">
                 <h2 className="text-2xl font-bold mb-6 text-center">Login Page</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700">Email</label>
                         <input
                             type="email"
                             id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            {...register('email', { required: true })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                             required
                         />
@@ -46,8 +48,7 @@ const Login = () => {
                         <input
                             type="password"
                             id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            {...register('password', { required: true })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                             required
                         />

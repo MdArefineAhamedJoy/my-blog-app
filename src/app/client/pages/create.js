@@ -1,16 +1,20 @@
 "use client"
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import apiClient from '../../../axios';
 
 const CreateBlogPage = () => {
     const user = true;
-
     const { register, handleSubmit, formState: { errors } } = useForm();
     const mutation = useMutation((newBlog) => apiClient.post('/blogs', newBlog));
 
     const onSubmit = async (data) => {
+        if (!user) {
+            console.error('Not a Valid User');
+            return;
+        }
+
+        data.email = user.email;
         try {
             await mutation.mutateAsync(data);
             console.log('Blog published successfully');
@@ -21,22 +25,20 @@ const CreateBlogPage = () => {
 
     return (
         <div className=" bg-gray-100  ">
-
             {user ? (
                 <div className="bg-white shadow-lg rounded p-10  w-10/12 mx-auto">
                     <h1 className="text-4xl font-bold mb-8 text-center text-blue-600">Create Blog</h1>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        <div>
-                            <label htmlFor="email" className="block text-gray-700 text-sm font-semibold mb-1">Email:</label>
-                            <input
-                                type="email"
-                                id="email"
-                                {...register('email', { required: true })}
-                                className="w-full p-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:border-blue-500"
-                                required
-                            />
-                            {errors.email && <span className="text-red-500">Email is required</span>}
-                        </div>
+                        <input
+                            type="email"
+                            id="email"
+                            {...register('email', { required: true })}
+                            defaultValue={user?.email}
+                            readOnly
+                            className="w-full p-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:border-blue-500"
+                            required
+                        />
+
                         <div className='flex w-full gap-10'>
                             <div className='w-full'>
                                 <label htmlFor="title" className="block text-gray-700 text-sm font-semibold mb-1">Blog Title:</label>
