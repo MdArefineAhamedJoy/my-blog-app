@@ -46,9 +46,9 @@ const Profile = () => {
         mutation.mutate(id);
     };
 
-    if (isUserLoading || isBlogsLoading) return <div>Loading...</div>;
-    if (userError) return <div>Error loading user data: {userError.message}</div>;
-    if (blogsError) return <div>Error loading blogs: {blogsError.message}</div>;
+    // if (isUserLoading || isBlogsLoading) return <div>Loading...</div>;
+    // if (userError) return <div>Error loading user data: {userError.message}</div>;
+    // if (blogsError) return <div>Error loading blogs: {blogsError.message}</div>;
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
