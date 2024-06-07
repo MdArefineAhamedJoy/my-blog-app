@@ -1,10 +1,10 @@
 import ReactQueryProvider from "@/ReactQueryProvider"
-import HomePage from "./client/pages"
+
 
 const MyApp = () => {
   return (
     <ReactQueryProvider>
-      <HomePage></HomePage>
+      <h1 className="text-center py-12">Home Page</h1>
     </ReactQueryProvider>
   )
 }

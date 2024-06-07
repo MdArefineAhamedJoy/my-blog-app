@@ -6,7 +6,7 @@ import apiClient from '../../../axios';
 import { useRouter } from 'next/navigation';
 
 
-const SignUp = () => {
+const Signup = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const router = useRouter();
 
@@ -80,7 +80,7 @@ const SignUp = () => {
                         type="submit"
                         className="w-full bg-green-500 text-white py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out transform hover:scale-105"
                     >
-                        Sign Up
+                        Sign up
                     </button>
 
 
@@ -90,4 +90,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default Signup;

@@ -26,7 +26,7 @@ const CreateBlogPage = () => {
     };
 
     return (
-        <div className=" bg-gray-100">
+        <div className=" bg-gray-100 my-10">
             {userEmail ? (
                 <div className="bg-white shadow-lg rounded p-10 w-10/12 mx-auto">
                     <h1 className="text-4xl font-bold mb-8 text-center text-blue-600">Create Blog</h1>
