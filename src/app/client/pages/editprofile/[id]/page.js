@@ -1,9 +1,11 @@
-"use client"
+"use client";
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import apiClient from '../../../../../axios';
 
 const EditProfile = () => {
+    const router = useRouter();
     const { id: email } = useParams();
 
     const [userData, setUserData] = useState(null);
@@ -40,9 +42,11 @@ const EditProfile = () => {
         e.preventDefault();
         try {
             const response = await apiClient.put(`/profile/${email}`, updatedUserData);
-
+            toast.success('Profile updated successfully');
+            router.push('/profile'); // Navigate to the profile page
         } catch (error) {
             console.error("Error updating user data:", error);
+            toast.error('Error updating profile');
         }
     };
 

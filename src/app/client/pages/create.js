@@ -1,36 +1,34 @@
-"use client"
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import apiClient from '../../../axios';
-import { useUserContext } from '@/hooks/AuthContext';
+"use client";
 
+import { useForm } from 'react-hook-form';
+import apiClient from '../../../axios';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const CreateBlogPage = () => {
     const storedData = typeof window !== "undefined" ? localStorage.getItem("user") : null;
     const userEmail = storedData ? JSON.parse(storedData).email : null;
+    const router = useRouter();
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const mutation = useMutation((newBlog) => apiClient.post('/blogs', newBlog));
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onSubmit = async (data) => {
-        if (!user) {
-            console.error('Not a Valid User');
-            return;
-        }
-
+        setIsSubmitting(true);
         try {
-            data.email = userEmail
-            await mutation.mutateAsync(data);
-            console.log('Blog published successfully');
+            data.email = userEmail;
+            await apiClient.post('/blogs', data);
+            router.push('/profile')
         } catch (error) {
             console.error('Failed to publish blog:', error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
         <div className=" bg-gray-100">
             {userEmail ? (
-                <div className="bg-white shadow-lg rounded p-10  w-10/12 mx-auto">
+                <div className="bg-white shadow-lg rounded p-10 w-10/12 mx-auto">
                     <h1 className="text-4xl font-bold mb-8 text-center text-blue-600">Create Blog</h1>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         <input
@@ -88,8 +86,12 @@ const CreateBlogPage = () => {
                             {errors.publicationDate && <span className="text-red-500">Publication date is required</span>}
                         </div>
                         <div className="text-center">
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-sm focus:outline-none focus:shadow-outline">
-                                Publish Blog
+                            <button
+                                type="submit"
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-sm focus:outline-none focus:shadow-outline"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? 'Publishing...' : 'Publish Blog'}
                             </button>
                         </div>
                     </form>

@@ -1,8 +1,9 @@
-import SingUp from "../client/pages/signup"
+import SignUp from "../client/pages/signup"
 
-const SingUpPage = () => {
+
+const SignUpPage = () => {
     return (
-        <><SingUp></SingUp></>
+        <><SignUp></SignUp></>
     )
 }
-export default SingUpPage
+export default SignUpPage

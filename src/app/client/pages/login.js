@@ -18,7 +18,7 @@ const Login = () => {
                 localStorage.setItem('token', token);
                 localStorage.setItem('user', JSON.stringify(data));
 
-                toast.success('Login successful');
+                toast.success('Successfully login !');
                 reset();
                 router.push('/profile');
             } else {

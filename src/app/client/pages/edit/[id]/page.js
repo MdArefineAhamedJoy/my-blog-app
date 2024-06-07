@@ -1,12 +1,13 @@
 "use client";
-
-import { useParams } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import apiClient from "../../../../../axios";
+import { useParams, useRouter } from "next/navigation";
 
 const EditBlog = () => {
-
+    const router = useRouter();
     const { id } = useParams();
+    console.log(id)
     const [blogData, setBlogData] = useState(null);
 
     useEffect(() => {
@@ -33,16 +34,19 @@ const EditBlog = () => {
         try {
             const response = await apiClient.put(`/blogs/${id}`, blogData);
             if (response.status === 200) {
+                toast.success("Blog updated successfully");
                 router.push("/profile");
             } else {
                 console.error("Error saving blog:", response.statusText);
+                toast.error("Error saving blog");
             }
         } catch (error) {
             console.error("Error saving blog:", error);
+            toast.error("Error saving blog");
         }
     };
 
-    if (!blogData) return <div>Loading...</div>;
+    if (!blogData) return null;
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">

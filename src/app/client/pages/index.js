@@ -42,7 +42,7 @@ const HomePage = () => {
                         <Link href="/login" className={getLinkClasses("/login")}>
                             Login
                         </Link>
-                        <Link href="/singup" className={getLinkClasses("/singup")}>
+                        <Link href="/signup" className={getLinkClasses("/singup")}>
                             SignUp
                         </Link>
                         <Link href="/profile" className={getLinkClasses("/profile")}>

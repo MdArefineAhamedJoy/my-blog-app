@@ -70,7 +70,7 @@ const Profile = () => {
                         {userBlogs?.length > 0 ? (
                             <ul className="border p-4">
                                 {userBlogs.map((blog) => (
-                                    <li key={blog.id} className="mb-4 border-b-2 pb-2">
+                                    <li key={blog?._id} className="mb-4 border-b-2 pb-2">
                                         <h4 className="text-lg font-semibold mb-1 text-center">{blog.title}</h4>
                                         <p className="text-gray-700 mb-2">{blog.content}</p>
                                         <div className="flex items-center justify-between w-full">
@@ -78,10 +78,10 @@ const Profile = () => {
                                                 <p>Published on:</p> {new Date(blog.publicationDate).toLocaleDateString()}
                                             </div>
                                             <div className="flex items-center">
-                                                <button onClick={() => handleDelete(blog.id)} className="mr-4">
+                                                <button onClick={() => handleDelete(blog?._id)} className="mr-4">
                                                     <MdOutlineDeleteOutline />
                                                 </button>
-                                                <Link href={`/client/pages/edit/${blog.id}`} className="flex items-center">
+                                                <Link href={`/client/pages/edit/${blog._id}`} className="flex items-center">
                                                     <MdEdit />
                                                     <span className="ml-1">Edit</span>
                                                 </Link>
